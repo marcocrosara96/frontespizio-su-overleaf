@@ -1,0 +1,80 @@
+\documentclass[a4paper,titlepage]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{frontespizio}
+
+\newcommand{\overleaf}{Overleaf}
+
+\begin{document}
+
+% \maketitle
+\begin{frontespizio}
+    % Qui verrà riportato il frontespizio compilato a parte
+\end{frontespizio}
+
+\chapter{Frontespizio su Overleaf}
+
+\section{Introduzione}
+Molte volte accade che ci sia il bisogno di utilizzare il pacchetto {\sffamily front-th}~\cite{egreg} su \overleaf{}, i pigri studenti del Dipartimento di Informatica di Verona che vogliono comporre la propria tesi non vogliono infatti installare la \emph{TeX Live} sul proprio pc. Questo breve documento ha lo scopo di mostrare i semplici passi per procedere con successo a tale operazione.
+
+\section{Procedura}
+
+Sia che vogliate aggiungere il frontespizio a un progetto già esistente o che vogliate iniziare da zero, il vostro progetto dovrà avere un file \texttt{main.tex}, il documento principale con il testo della tesi. Nei passi che seguono si suppone inoltre che abbiate scelto la classe \texttt{book} per il vostro progetto, se avete fatto altrimenti dovrete adoperarvi con le piccole modifiche necessarie.
+La metodologia che applicheremo sarà basata sulla creazione di un documento secondario contenete le direttive per la creazione di un pdf con il frontespizio; tale pdf verrà poi inserito come prima pagina del documento finale tramite una segnaposto sul documento \texttt{main.tex}. Procedete dunque come segue:
+
+\begin{enumerate}
+    \item Create tramite il menù di \overleaf{} un nuovo file: \texttt{frontespizio.tex}. 
+    \item In questo file andrà inserito un ambiente \texttt{frontespizio} contenente le direttive specifiche del pacchetto stesso~\cite{egreg} con un wrap in un \emph{document}, come spiegato in via ufficiale da \overleaf{}~\cite{frontespizio-overleaf} e riportato a seguito:
+\begin{verbatim}
+\documentclass[a4paper,titlepage]{book}
+\usepackage{frontespizio}
+
+\begin{document}
+    \begin{frontespizio}
+        \Universita{Verona}
+        \Dipartimento{Informatica}
+        \Corso[Laurea Magistrale]{Ingegneria e ...}
+        \Titoletto{Guida Rapida in due pagine}
+        \Titolo{Come usare il pacchetto f...}
+        \Candidato[VR434403]{Marco Crosara}
+        \Relatore{Prof.~Tyrion Lannister}
+        \Annoaccademico{2019-2020}
+    \end{frontespizio}
+    \immediate\write18{pdflatex \jobname-frn}
+\end{document}
+\end{verbatim}
+    \item A questo punto è necessario inserire il riferimento al frontespizio sul documento principale \texttt{main.tex}, per farlo è sufficente sostituire il classico comando \texttt{\textbackslash{}maketitle} con il seguente segnaposto:
+\begin{verbatim}
+\begin{frontespizio}
+
+\end{frontespizio}
+\end{verbatim}
+    Anche su \texttt{main.tex} bisogna inoltre includere, come nel caso di \texttt{frontespizio.tex}, il pacchetto necessario:
+\begin{verbatim}
+\usepackage{frontespizio}
+\end{verbatim}    
+    \item Infine non ci rimane altro che procedere alla compilazione dei documenti e alla generazione del file di output, seguendo rigorosamente l'ordine sarà quindi necessario:
+    \begin{enumerate}
+        \item Spostarsi sul documento \texttt{frontespizio.tex} e cliccare su \emph{Recompile}. In tal modo verrà quindi generato il file \texttt{jobname-frn.pdf} relativo al frontespizio (non sarà visibile sull'esplora risorse di Overleaf ma sarà comunque presente nel server).
+        \item Spostarsi sul documento principale \texttt{main.tex} e cliccare su \emph{Recompile}. Generando quindi il documento finale che preconcatena il frontespizio \texttt{jobname-frn.pdf} al documento pricipale.
+    \end{enumerate}
+\end{enumerate}
+
+\'E possibile procedere anche senza l'utilizzo di un secondo file \texttt{frontespizio.tex}, integrando direttamente l'ambiente frontespizio sul documento principale \texttt{main.tex}, tuttavia per una pulita struttura del progetto qui è stata presentata la procedura facente uso di un file separato.
+
+\section{Note}
+
+Quando si accederà in futuro al progetto su Overleaf, in mancanza di cookie, può accadere che compilando il documento \texttt{main.tex} non venga generato il frontespizio ma una pagina vuota, questo perchè è necessario procedere nuovamente alla generazione del frontespizio (\texttt{jobname-frn.pdf}). Per sistemare è sufficiente ripetere il punto 4 della procedura, rigenerando quindi prima il frontespizio e procedendo solo poi alla compilazione del documento completo.
+
+% https://it.overleaf.com/learn/latex/Questions/How_do_I_use_the_frontespizio_package%3F
+
+\section{Conclusione}
+Questa guida, nella sua semplicità, non vuole essere più che un aiuto agli studenti e un ringraziamento al Maestro di \LaTeX{}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
